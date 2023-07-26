@@ -4,7 +4,8 @@
     "google/cloud-functions-framework": "^1.1",
     "cloudevents/sdk-php": "^1.0",
     "google/cloud-datastore": "^1.5",
-    "google/cloud-pubsub": "^1.45"
+    "google/cloud-pubsub": "^1.45",
+    "abraham/twitteroauth": "^6.0"
   },
   "scripts": {
     "start": [
