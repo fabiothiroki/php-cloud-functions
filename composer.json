@@ -1,0 +1,15 @@
+{
+  "require": {
+    "php": ">= 8.2",
+    "google/cloud-functions-framework": "^1.1",
+    "cloudevents/sdk-php": "^1.0",
+    "google/cloud-datastore": "^1.5",
+    "google/cloud-pubsub": "^1.45"
+  },
+  "scripts": {
+    "start": [
+      "Composer\\Config::disableProcessTimeout",
+      "FUNCTION_TARGET=helloHttp php -S localhost:${PORT:-8080} vendor/google/cloud-functions-framework/router.php"
+    ]
+  }
+}
