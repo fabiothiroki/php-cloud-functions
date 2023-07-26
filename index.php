@@ -14,7 +14,7 @@ FunctionsFramework::cloudEvent('helloworldPubsub', 'helloworldPubsub');
 function helloworldPubsub(CloudEventInterface $event): void
 {
     $log = fopen(getenv('LOGGER_OUTPUT') ?: 'php://stderr', 'wb');
-    fwrite($log, "Received pubsub message" . PHP_EOL);
+    fwrite($log, "> Received pubsub message" . PHP_EOL);
 
     $projectId = getenv('GCLOUD_PROJECT');
     $datastore = new DatastoreClient([
@@ -35,7 +35,7 @@ function helloworldPubsub(CloudEventInterface $event): void
             $entity['author']
         );
 
-        fwrite($log, sprintf('Message: %s%s', $message, PHP_EOL));
+        fwrite($log, sprintf('> Found Message: %s%s', $message, PHP_EOL));
 
         $pubsub = new PubSubClient([
             'projectId' => $projectId,
@@ -44,6 +44,11 @@ function helloworldPubsub(CloudEventInterface $event): void
         $topic = $pubsub->topic(getenv('MESSAGES_BROADCAST_TOPIC'));
         $topic->publish((new MessageBuilder)->setData($message)->build());
 
-        fwrite($log, sprintf('Message published to topic %s%s', getenv('MESSAGES_BROADCAST_TOPIC'), PHP_EOL));
+        fwrite($log, sprintf('> Message published to topic %s%s', getenv('MESSAGES_BROADCAST_TOPIC'), PHP_EOL));
+
+        $entity['published_at'] = new DateTimeImmutable();
+        $datastore->update($entity);
+
+        fwrite($log, sprintf('> Updated published date %s', PHP_EOL));
     }
 }
